@@ -2,7 +2,6 @@
 #include <U8g2lib.h>
 #include <DHT.h>
 #include <DHT_U.h>
-#include <Wire.h>
 
 #ifdef U8X8_HAVE_HW_SPI
 #include <SPI.h>
@@ -47,11 +46,20 @@ void loop(void) {
     delay(1000);  
     return;
     }
-  if (temp >= 30) {
+  if (temp >= 32 || hum >= 70 ) {
     WiFiDrv::analogWrite(25, 255);
+    WiFiDrv::analogWrite(26, 0);
+    WiFiDrv::analogWrite(27, 0);
   }
-  else if(temp < 30){
-    WiFiDrv::analogWrite(27, 255);
+  else if(temp >= 30 || hum >= 60){
+    WiFiDrv::analogWrite(25, 128);
+    WiFiDrv::analogWrite(26, 128);
+    WiFiDrv::analogWrite(27, 0);
+  }
+  else if(temp < 30 || hum < 60){
+    WiFiDrv::analogWrite(25, 0);
+    WiFiDrv::analogWrite(26, 128);
+    WiFiDrv::analogWrite(27, 0);
   }
   
   // print to monitor
